@@ -1,0 +1,43 @@
+# Dependencies
+**/bin/
+**/obj/
+
+# Build output
+**/wwwroot/lib/
+
+# .NET Core
+*.db
+*.log
+appsettings*.json
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Environment variables
+.env
+*.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editor/IDE
+.idea/
+*.vscode/
+
+# Build artifacts
+out/
+
+# Test results
+TestResults/
+
+# NuGet
+packages/
+
+# Entity Framework
+migrations/**/BlogDbContextModelSnapshot.cs
