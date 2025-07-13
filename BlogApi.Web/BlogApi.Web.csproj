@@ -8,11 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlogApi.Application\BlogApi.Application.csproj" />
     <ProjectReference Include="..\BlogApi.Infrastructure\BlogApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\BlogApi.Domain\BlogApi.Domain.csproj" />
   </ItemGroup>
 
 </Project>
