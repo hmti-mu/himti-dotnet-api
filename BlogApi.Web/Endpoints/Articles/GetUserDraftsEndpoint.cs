@@ -13,7 +13,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Get("/api/articles/drafts");
             Policies("RequireUser"); // Authenticated users can see their drafts
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Get user's draft articles";

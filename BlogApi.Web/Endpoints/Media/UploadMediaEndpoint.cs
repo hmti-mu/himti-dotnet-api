@@ -15,7 +15,7 @@ namespace BlogApi.Web.Endpoints.Media
             Post("/api/media/upload");
             Policies("RequireUser");
             AllowFormData(); // Enable multipart/form-data support
-            Tags("3. Media");
+            Tags("Media");
             Summary(s =>
             {
                 s.Summary = "Upload a media file";

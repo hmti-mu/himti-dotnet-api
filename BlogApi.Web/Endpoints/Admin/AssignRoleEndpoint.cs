@@ -20,7 +20,7 @@ namespace BlogApi.Web.Endpoints.Admin
         {
             Put("/api/admin/users/{userId}/role");
             Policies(PolicyNames.RequireAdmin);
-            Tags("3. Administration");
+            Tags("Admin");
             Summary(s =>
             {
                 s.Summary = "Assign role to user";

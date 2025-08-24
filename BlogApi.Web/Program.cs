@@ -102,6 +102,14 @@ builder.Services.SwaggerDocument(o =>
         s.Description = "A comprehensive blog management API organized by domain";
         s.Version = "v1";
     };
+    o.RemoveEmptyRequestSchema = true;
+    o.TagDescriptions = td =>
+    {
+        td.Add("Articles", "All article-related endpoints");
+        td.Add("Auth", "Authentication and authorization endpoints");
+        td.Add("Admin", "Administrative endpoints");
+        td.Add("Media", "Media management endpoints");
+    };
 });
 
 // Add CORS

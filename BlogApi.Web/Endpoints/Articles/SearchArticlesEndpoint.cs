@@ -23,7 +23,7 @@ public class SearchArticlesEndpoint : Endpoint<SearchArticlesRequest, ArticleSea
     {
         Get("/api/articles/search");
         AllowAnonymous();
-        Tags("1. Articles");
+        Tags("Articles");
         Summary(s =>
         {
             s.Summary = "Search and filter articles";

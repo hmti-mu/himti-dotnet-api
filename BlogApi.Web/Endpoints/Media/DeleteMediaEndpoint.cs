@@ -16,7 +16,7 @@ namespace BlogApi.Web.Endpoints.Media
         {
             Delete("/api/media/{id}");
             Policies("RequireAdmin"); // Only admins can delete media
-            Tags("3. Media");
+            Tags("Media");
             Summary(s =>
             {
                 s.Summary = "Delete a media file";

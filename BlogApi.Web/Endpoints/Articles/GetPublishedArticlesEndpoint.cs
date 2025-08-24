@@ -12,7 +12,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Get("/api/articles/published");
             AllowAnonymous(); // Public endpoint to get published articles
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Get published articles";

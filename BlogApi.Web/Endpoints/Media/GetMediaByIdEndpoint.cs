@@ -17,7 +17,7 @@ namespace BlogApi.Web.Endpoints.Media
         {
             Get("/api/media/{id}");
             AllowAnonymous(); // Public endpoint for serving media
-            Tags("3. Media");
+            Tags("Media");
             Summary(s =>
             {
                 s.Summary = "Get media file by ID";

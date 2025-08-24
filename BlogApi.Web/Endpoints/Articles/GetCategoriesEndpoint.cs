@@ -11,7 +11,7 @@ public class GetCategoriesEndpoint : EndpointWithoutRequest<IEnumerable<string>>
     {
         Get("/api/articles/categories");
         AllowAnonymous();
-        Tags("1. Articles");
+        Tags("Articles");
         Summary(s =>
         {
             s.Summary = "Get all article categories";

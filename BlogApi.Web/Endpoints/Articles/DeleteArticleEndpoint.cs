@@ -12,7 +12,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Delete("/api/articles/{id}");
             Policies("RequireUser");
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Delete an article";

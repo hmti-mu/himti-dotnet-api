@@ -12,7 +12,7 @@ namespace BlogApi.Web.Endpoints.Media
         {
             Get("/api/media");
             Policies("RequireUser");
-            Tags("3. Media");
+            Tags("Media");
             Summary(s =>
             {
                 s.Summary = "Get all media files";

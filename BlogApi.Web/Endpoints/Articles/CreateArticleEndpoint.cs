@@ -12,7 +12,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Post("/api/articles");
             Policies("RequireUser");
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Create a new article";

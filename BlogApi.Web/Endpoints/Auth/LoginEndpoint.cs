@@ -13,7 +13,7 @@ namespace BlogApi.Web.Endpoints.Auth
         {
             Post("/api/auth/login");
             AllowAnonymous();
-            Tags("2. Authentication");
+            Tags("Auth");
             Summary(s =>
             {
                 s.Summary = "User login";

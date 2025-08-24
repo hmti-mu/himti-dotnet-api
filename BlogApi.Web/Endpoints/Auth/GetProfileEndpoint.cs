@@ -14,7 +14,7 @@ namespace BlogApi.Web.Endpoints.Auth
         {
             Get("/api/auth/profile");
             Policies(PolicyNames.RequireUser);
-            Tags("2. Authentication");
+            Tags("Auth");
             Summary(s =>
             {
                 s.Summary = "Get current user profile";
