@@ -34,7 +34,7 @@ builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
-// Register Services
+// Register Authentication Service
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 // Register Use Cases
@@ -89,7 +89,17 @@ builder.Services.AddAuthorization(options =>
 
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
-builder.Services.SwaggerDocument();
+
+// Configure Swagger with proper tag-based organization
+builder.Services.SwaggerDocument(o =>
+{
+    o.DocumentSettings = s =>
+    {
+        s.Title = "Blog API";
+        s.Description = "A comprehensive blog management API organized by domain";
+        s.Version = "v1";
+    };
+});
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -105,6 +115,31 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Ensure database is created and migrated
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    try
+    {
+        context.Database.Migrate();
+        Console.WriteLine("Database migrations applied successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration error: {ex.Message}");
+        // Fallback to EnsureCreated for development
+        try
+        {
+            context.Database.EnsureCreated();
+            Console.WriteLine("Database created using EnsureCreated fallback");
+        }
+        catch (Exception ex2)
+        {
+            Console.WriteLine($"Database creation fallback error: {ex2.Message}");
+        }
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -114,6 +149,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAll"); // Enable CORS
 
+// Authentication and Authorization
 app.UseAuthentication(); // Add authentication middleware
 app.UseAuthorization();  // Add authorization middleware
 

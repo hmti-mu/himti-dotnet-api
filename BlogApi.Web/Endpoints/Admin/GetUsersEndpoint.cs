@@ -13,7 +13,7 @@ namespace BlogApi.Web.Endpoints.Admin
         {
             Get("/api/admin/users");
             Policies(PolicyNames.RequireAdmin);
-            Tags("Administration");
+            Tags("3. Administration");
             Summary(s =>
             {
                 s.Summary = "Get all users";

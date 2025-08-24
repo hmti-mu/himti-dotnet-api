@@ -20,20 +20,19 @@ namespace BlogApi.Web.Endpoints.Articles
 
     public class UpdateArticleEndpoint : Endpoint<UpdateArticleRequestModel, ArticleDto>
     {
-        public UpdateArticleUseCase UseCase { get; set; } = null!;
-
-        public override void Configure()
+        public UpdateArticleUseCase UseCase { get; set; } = null!;        public override void Configure()
         {
             Put("/api/articles/{id}");
-            AllowAnonymous();
-            Tags("Articles");
+            Policies("RequireUser");
+            Tags("1. Articles");
             Summary(s =>
             {
                 s.Summary = "Update an article";
-                s.Description = "Updates an existing article with new title and content";
+                s.Description = "Updates an existing article with new title and content. Requires authentication.";
                 s.Response<ArticleDto>(200, "Article updated successfully");
                 s.Response(404, "Article not found");
                 s.Response(400, "Bad request - validation failed");
+                s.Response(401, "Unauthorized - authentication required");
             });
         }
 
