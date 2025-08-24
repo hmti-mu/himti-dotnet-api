@@ -2,6 +2,7 @@ using BlogApi.Application.DTOs;
 using BlogApi.Application.UseCases;
 using BlogApi.Web.Models.Requests;
 using FastEndpoints;
+using System.Security.Claims;
 
 namespace BlogApi.Web.Endpoints.Articles
 {
@@ -10,19 +11,23 @@ namespace BlogApi.Web.Endpoints.Articles
         public CreateArticleUseCase UseCase { get; set; } = null!;        public override void Configure()
         {
             Post("/api/articles");
-            AllowAnonymous(); // Temporary change for testing
+            Policies("RequireUser");
             Tags("1. Articles");
             Summary(s =>
             {
                 s.Summary = "Create a new article";
-                s.Description = "Creates a new article with the provided title and content.";
+                s.Description = "Creates a new article with the provided title and content. Requires authentication.";
                 s.Response<ArticleDto>(201, "Article created successfully");
                 s.Response(400, "Bad request - validation failed");
+                s.Response(401, "Unauthorized - authentication required");
+                s.Response(403, "Forbidden - insufficient permissions");
             });
-        }public override async Task HandleAsync(CreateArticleRequest req, CancellationToken ct)
+        }
+
+        public override async Task HandleAsync(CreateArticleRequest req, CancellationToken ct)
         {
             // Get author ID from the authenticated user's claims
-            var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "user_id");
+            var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             int? authorId = null;
             
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
