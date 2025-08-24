@@ -17,7 +17,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Get("/api/articles/slug/{slug}");
             AllowAnonymous(); // Public endpoint
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Get article by slug";

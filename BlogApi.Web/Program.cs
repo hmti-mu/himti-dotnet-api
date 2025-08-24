@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Reflection;
+using NSwag.Generation.Processors;
+using NSwag.Generation.Processors.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,6 +104,15 @@ builder.Services.SwaggerDocument(o =>
         s.Title = "Blog API";
         s.Description = "A comprehensive blog management API organized by domain";
         s.Version = "v1";
+        s.OperationProcessors.Add(new TagProcessor());
+    };
+    o.RemoveEmptyRequestSchema = true;
+    o.TagDescriptions = td =>
+    {
+        td.Add("Articles", "All article-related endpoints");
+        td.Add("Auth", "Authentication and authorization endpoints");
+        td.Add("Admin", "Administrative endpoints");
+        td.Add("Media", "Media management endpoints");
     };
 });
 
@@ -172,3 +184,31 @@ app.UseAuthorization();
 app.UseFastEndpoints();
 
 app.Run();
+
+// Custom processor to fix tag assignments
+public class TagProcessor : IOperationProcessor
+{
+    public bool Process(OperationProcessorContext context)
+    {
+        var endpointName = context.OperationDescription.Operation.OperationId;
+        
+        if (endpointName.Contains("Articles"))
+        {
+            context.OperationDescription.Operation.Tags = new List<string> { "Articles" };
+        }
+        else if (endpointName.Contains("Auth"))
+        {
+            context.OperationDescription.Operation.Tags = new List<string> { "Auth" };
+        }
+        else if (endpointName.Contains("Admin"))
+        {
+            context.OperationDescription.Operation.Tags = new List<string> { "Admin" };
+        }
+        else if (endpointName.Contains("Media"))
+        {
+            context.OperationDescription.Operation.Tags = new List<string> { "Media" };
+        }
+        
+        return true;
+    }
+}

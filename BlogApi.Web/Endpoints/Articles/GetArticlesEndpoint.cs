@@ -10,7 +10,7 @@ public class GetArticlesEndpoint : EndpointWithoutRequest<IEnumerable<ArticleDto
     {
         Get("/api/articles");
         AllowAnonymous();
-        Tags("1. Articles");
+        Tags("Articles");
         Summary(s =>
         {
             s.Summary = "Get all articles";

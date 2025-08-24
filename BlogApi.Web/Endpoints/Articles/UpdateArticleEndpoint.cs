@@ -24,7 +24,7 @@ namespace BlogApi.Web.Endpoints.Articles
         {
             Put("/api/articles/{id}");
             Policies("RequireUser");
-            Tags("1. Articles");
+            Tags("Articles");
             Summary(s =>
             {
                 s.Summary = "Update an article";
