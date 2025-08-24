@@ -3,11 +3,12 @@ using BlogApi.Domain.Interfaces;
 using BlogApi.Infrastructure.Data;
 using BlogApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using FastEndpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddFastEndpoints();
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
@@ -39,16 +40,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll"); // Enable CORS
-app.MapControllers(); // Map controller routes
-
-app.MapGet(
-        "/api/articles",
-        async (GetArticlesUseCase useCase) =>
-        {
-            var articles = await useCase.ExecuteAsync();
-            return Results.Ok(articles);
-        }
-    )
-    .WithName("GetArticles");
+app.UseFastEndpoints(c => { c.Endpoints.RoutePrefix = "api"; });
 
 app.Run();
