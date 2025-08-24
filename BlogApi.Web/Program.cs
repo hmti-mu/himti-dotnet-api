@@ -13,7 +13,8 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 );
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<GetArticlesUseCase>();
-builder.Services.AddOpenApi(); // OpenAPI configuration
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(); // Swagger configuration
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -32,7 +33,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(); // Map OpenAPI endpoint
+    app.UseSwagger(); // Enable Swagger
+    app.UseSwaggerUI(); // Enable SwaggerUI
 }
 
 app.UseHttpsRedirection();
