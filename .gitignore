@@ -7,6 +7,8 @@
 
 # .NET Core
 *.db
+*.db-shm
+*.db-wal
 *.log
 appsettings*.json
 
