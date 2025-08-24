@@ -11,14 +11,14 @@ namespace BlogApi.Application.UseCases
         public CreateArticleUseCase(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-        }
-
-        public async Task<ArticleDto> ExecuteAsync(string title, string content, int? authorId = null)
+        }        public async Task<ArticleDto> ExecuteAsync(string title, string content, string category = "", string? thumbnailUrl = null, int? authorId = null)
         {
             var article = new Article
             {
                 Title = title,
                 Content = content,
+                Category = category,
+                ThumbnailUrl = thumbnailUrl,
                 AuthorId = authorId
             };
 
@@ -29,7 +29,10 @@ namespace BlogApi.Application.UseCases
                 Id = createdArticle.Id,
                 Title = createdArticle.Title,
                 Content = createdArticle.Content,
-                PublishedDate = createdArticle.PublishedDate
+                Category = createdArticle.Category,
+                ThumbnailUrl = createdArticle.ThumbnailUrl,
+                PublishedDate = createdArticle.PublishedDate,
+                AuthorId = createdArticle.AuthorId
             };
         }
     }

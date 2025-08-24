@@ -12,9 +12,7 @@ namespace BlogApi.Application.UseCases
         public GetArticlesUseCase(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-        }
-
-        public async Task<IEnumerable<ArticleDto>> ExecuteAsync()
+        }        public async Task<IEnumerable<ArticleDto>> ExecuteAsync()
         {
             var articles = await _articleRepository.GetAllAsync();
             var articleDtos = new List<ArticleDto>();
@@ -25,7 +23,11 @@ namespace BlogApi.Application.UseCases
                         Id = article.Id,
                         Title = article.Title,
                         Content = article.Content,
+                        Category = article.Category,
+                        ThumbnailUrl = article.ThumbnailUrl,
                         PublishedDate = article.PublishedDate,
+                        AuthorName = article.Author?.Username,
+                        AuthorId = article.AuthorId
                     }
                 );
             }
