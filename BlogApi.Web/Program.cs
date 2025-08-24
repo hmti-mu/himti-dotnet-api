@@ -76,6 +76,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<GetArticlesUseCase>();
 builder.Services.AddScoped<CreateArticleUseCase>();
 builder.Services.AddScoped<GetArticleByIdUseCase>();
+builder.Services.AddScoped<GetArticleBySlugUseCase>();
 builder.Services.AddScoped<UpdateArticleUseCase>();
 builder.Services.AddScoped<DeleteArticleUseCase>();
 builder.Services.AddScoped<GetCategoriesUseCase>();

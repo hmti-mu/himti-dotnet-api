@@ -56,6 +56,10 @@ namespace BlogApi.Infrastructure.Data
                 .HasIndex(r => r.Name)
                 .IsUnique();
 
+            modelBuilder.Entity<Article>()
+                .HasIndex(a => a.Slug)
+                .IsUnique();
+
             // Seed default roles
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Guest", Description = "Guest users with read-only access", Level = 0 },

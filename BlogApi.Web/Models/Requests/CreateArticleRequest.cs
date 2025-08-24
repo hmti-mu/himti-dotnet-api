@@ -16,5 +16,18 @@ namespace BlogApi.Web.Models.Requests
 
         [Url(ErrorMessage = "ThumbnailUrl must be a valid URL")]
         public string? ThumbnailUrl { get; set; }
+
+        // SEO fields
+        [StringLength(200, ErrorMessage = "Slug cannot exceed 200 characters")]
+        public string? Slug { get; set; }
+
+        [StringLength(200, ErrorMessage = "MetaTitle cannot exceed 200 characters")]
+        public string? MetaTitle { get; set; }
+
+        [StringLength(300, ErrorMessage = "MetaDescription cannot exceed 300 characters")]
+        public string? MetaDescription { get; set; }
+
+        [StringLength(500, ErrorMessage = "MetaKeywords cannot exceed 500 characters")]
+        public string? MetaKeywords { get; set; }
     }
 }

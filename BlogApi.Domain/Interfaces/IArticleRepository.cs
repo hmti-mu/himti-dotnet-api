@@ -21,5 +21,7 @@ namespace BlogApi.Domain.Interfaces
             int page = 1,
             int pageSize = 10);
         Task<IEnumerable<string>> GetCategoriesAsync();
+        Task<Article?> GetBySlugAsync(string slug);
+        Task<bool> SlugExistsAsync(string slug, int? excludeId = null);
     }
 }

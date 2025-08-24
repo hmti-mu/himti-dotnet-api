@@ -124,5 +124,24 @@ namespace BlogApi.Infrastructure.Repositories
                 .OrderBy(c => c)
                 .ToListAsync();
         }
+
+        public async Task<Article?> GetBySlugAsync(string slug)
+        {
+            return await _context.Articles
+                .Include(a => a.Author)
+                .FirstOrDefaultAsync(a => a.Slug == slug);
+        }
+
+        public async Task<bool> SlugExistsAsync(string slug, int? excludeId = null)
+        {
+            var query = _context.Articles.Where(a => a.Slug == slug);
+            
+            if (excludeId.HasValue)
+            {
+                query = query.Where(a => a.Id != excludeId.Value);
+            }
+            
+            return await query.AnyAsync();
+        }
     }
 }

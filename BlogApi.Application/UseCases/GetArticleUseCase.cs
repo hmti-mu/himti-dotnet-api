@@ -27,7 +27,11 @@ namespace BlogApi.Application.UseCases
                         ThumbnailUrl = article.ThumbnailUrl,
                         PublishedDate = article.PublishedDate,
                         AuthorName = article.Author?.Username,
-                        AuthorId = article.AuthorId
+                        AuthorId = article.AuthorId,
+                        Slug = article.Slug,
+                        MetaTitle = article.MetaTitle,
+                        MetaDescription = article.MetaDescription,
+                        MetaKeywords = article.MetaKeywords
                     }
                 );
             }
