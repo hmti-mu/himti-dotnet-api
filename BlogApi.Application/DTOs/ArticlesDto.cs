@@ -1,3 +1,5 @@
+using BlogApi.Domain.Enums;
+
 namespace BlogApi.Application.DTOs
 {
     public class ArticleDto
@@ -10,6 +12,18 @@ namespace BlogApi.Application.DTOs
         public DateTime PublishedDate { get; set; }
         public string? AuthorName { get; set; }
         public int? AuthorId { get; set; }
+        
+        // SEO fields
+        public string? Slug { get; set; }
+        public string? MetaTitle { get; set; }
+        public string? MetaDescription { get; set; }
+        public string? MetaKeywords { get; set; }
+
+        // Status and workflow fields
+        public ArticleStatus Status { get; set; }
+        public DateTime? ScheduledPublishAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class ArticleSearchFilterDto

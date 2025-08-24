@@ -1,3 +1,5 @@
+using BlogApi.Domain.Enums;
+
 namespace BlogApi.Domain.Entities
 {
     public class Article
@@ -9,6 +11,18 @@ namespace BlogApi.Domain.Entities
         public string? ThumbnailUrl { get; set; }
         public DateTime PublishedDate { get; set; }
         public int? AuthorId { get; set; } // Nullable to support existing articles without authors
+
+        // SEO fields
+        public string? Slug { get; set; }
+        public string? MetaTitle { get; set; }
+        public string? MetaDescription { get; set; }
+        public string? MetaKeywords { get; set; }
+
+        // Status and workflow fields
+        public ArticleStatus Status { get; set; } = ArticleStatus.Draft;
+        public DateTime? ScheduledPublishAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties
         public User? Author { get; set; }

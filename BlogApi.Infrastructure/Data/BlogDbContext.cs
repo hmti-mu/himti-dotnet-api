@@ -12,6 +12,7 @@ namespace BlogApi.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Media> Media { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,11 @@ namespace BlogApi.Infrastructure.Data
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AuthorId);
 
+            modelBuilder.Entity<Media>()
+                .HasOne(m => m.UploadedBy)
+                .WithMany()
+                .HasForeignKey(m => m.UploadedByUserId);
+
             // Configure unique constraints
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
@@ -48,6 +54,10 @@ namespace BlogApi.Infrastructure.Data
 
             modelBuilder.Entity<Role>()
                 .HasIndex(r => r.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Article>()
+                .HasIndex(a => a.Slug)
                 .IsUnique();
 
             // Seed default roles

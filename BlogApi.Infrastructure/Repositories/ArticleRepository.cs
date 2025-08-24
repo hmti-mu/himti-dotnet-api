@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogApi.Domain.Entities;
+using BlogApi.Domain.Enums;
 using BlogApi.Domain.Interfaces;
 using BlogApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -122,6 +123,43 @@ namespace BlogApi.Infrastructure.Repositories
                 .Select(a => a.Category)
                 .Distinct()
                 .OrderBy(c => c)
+                .ToListAsync();
+        }
+
+        public async Task<Article?> GetBySlugAsync(string slug)
+        {
+            return await _context.Articles
+                .Include(a => a.Author)
+                .FirstOrDefaultAsync(a => a.Slug == slug);
+        }
+
+        public async Task<bool> SlugExistsAsync(string slug, int? excludeId = null)
+        {
+            var query = _context.Articles.Where(a => a.Slug == slug);
+            
+            if (excludeId.HasValue)
+            {
+                query = query.Where(a => a.Id != excludeId.Value);
+            }
+            
+            return await query.AnyAsync();
+        }
+
+        public async Task<IEnumerable<Article>> GetPublishedArticlesAsync()
+        {
+            return await _context.Articles
+                .Include(a => a.Author)
+                .Where(a => a.Status == ArticleStatus.Published)
+                .OrderByDescending(a => a.PublishedDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Article>> GetDraftsByUserAsync(int userId)
+        {
+            return await _context.Articles
+                .Include(a => a.Author)
+                .Where(a => a.AuthorId == userId && a.Status == ArticleStatus.Draft)
+                .OrderByDescending(a => a.UpdatedAt)
                 .ToListAsync();
         }
     }

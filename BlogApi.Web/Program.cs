@@ -6,7 +6,9 @@ using BlogApi.Infrastructure.Repositories;
 using BlogApi.Infrastructure.Services;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -16,13 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<BlogDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 }
 else
 {
     builder.Services.AddDbContext<BlogDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 }
 
@@ -30,31 +32,30 @@ else
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 
 // Register Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
-// Add Authentication (JWT configuration temporarily simplified due to IDE IntelliSense issues)
-var jwtKey = builder.Configuration["JwtSettings:Key"] ?? "YourSuperSecretJwtKeyThatIsAtLeast256BitsLong!";
+// Add Authentication with JWT Bearer
+var jwtKey = builder.Configuration["JwtSettings:SecretKey"] ?? "YourSuperSecretJwtKeyThatIsAtLeast256BitsLong!";
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "BlogApi";
 var jwtAudience = builder.Configuration["JwtSettings:Audience"] ?? "BlogApiUsers";
 
-// Note: JWT Bearer authentication temporarily disabled due to IDE namespace resolution issues
-// The JWT package is properly installed and works at build time
-builder.Services.AddAuthentication("Bearer");
-// .AddJwtBearer("Bearer", options =>
-// {
-//     options.TokenValidationParameters = new TokenValidationParameters
-//     {
-//         ValidateIssuer = true,
-//         ValidateAudience = true,
-//         ValidateLifetime = true,
-//         ValidateIssuerSigningKey = true,
-//         ValidIssuer = jwtIssuer,
-//         ValidAudience = jwtAudience,
-//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-//     };
-// });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
 
 // Add Authorization with policies
 builder.Services.AddAuthorization(options =>
@@ -75,6 +76,9 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<GetArticlesUseCase>();
 builder.Services.AddScoped<CreateArticleUseCase>();
 builder.Services.AddScoped<GetArticleByIdUseCase>();
+builder.Services.AddScoped<GetArticleBySlugUseCase>();
+builder.Services.AddScoped<GetPublishedArticlesUseCase>();
+builder.Services.AddScoped<GetUserDraftsUseCase>();
 builder.Services.AddScoped<UpdateArticleUseCase>();
 builder.Services.AddScoped<DeleteArticleUseCase>();
 builder.Services.AddScoped<GetCategoriesUseCase>();
@@ -82,6 +86,9 @@ builder.Services.AddScoped<SearchArticlesUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
 builder.Services.AddScoped<LoginUserUseCase>();
 builder.Services.AddScoped<GetUsersUseCase>();
+builder.Services.AddScoped<UploadMediaUseCase>();
+builder.Services.AddScoped<GetMediaUseCase>();
+builder.Services.AddScoped<DeleteMediaUseCase>();
 
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
@@ -144,6 +151,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll"); // Enable CORS
+
+// Configure static file serving for uploaded media
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
 
 // Add Authentication & Authorization middleware
 app.UseAuthentication();

@@ -3,21 +3,23 @@ using BlogApi.Domain.Interfaces;
 
 namespace BlogApi.Application.UseCases
 {
-    public class GetArticleByIdUseCase
+    public class GetArticleBySlugUseCase
     {
         private readonly IArticleRepository _articleRepository;
 
-        public GetArticleByIdUseCase(IArticleRepository articleRepository)
+        public GetArticleBySlugUseCase(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
         }
 
-        public async Task<ArticleDto?> ExecuteAsync(int id)
+        public async Task<ArticleDto?> ExecuteAsync(string slug)
         {
-            var article = await _articleRepository.GetByIdAsync(id);
-
+            var article = await _articleRepository.GetBySlugAsync(slug);
+            
             if (article == null)
+            {
                 return null;
+            }
 
             return new ArticleDto
             {

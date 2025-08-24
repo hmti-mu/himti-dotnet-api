@@ -7,7 +7,12 @@
 
 # .NET Core
 *.db
+*.db-shm
+*.db-wal
 *.log
+
+# Uploaded files
+uploads/
 
 # Configuration files (keeping appsettings.json as template, but excluding appsettings.Development.json)
 appsettings.Development.json
