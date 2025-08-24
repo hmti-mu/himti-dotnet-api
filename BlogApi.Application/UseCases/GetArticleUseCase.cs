@@ -19,13 +19,12 @@ namespace BlogApi.Application.UseCases
             var articles = await _articleRepository.GetAllAsync();
             var articleDtos = new List<ArticleDto>();
             foreach (var article in articles)
-            {
-                articleDtos.Add(
+            {                articleDtos.Add(
                     new ArticleDto
                     {
                         Id = article.Id,
                         Title = article.Title,
-                        Content = article.Content.ToString(),
+                        Content = article.Content,
                         PublishedDate = article.PublishedDate,
                     }
                 );

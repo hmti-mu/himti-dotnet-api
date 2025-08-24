@@ -13,7 +13,13 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+
+// Register Use Cases
 builder.Services.AddScoped<GetArticlesUseCase>();
+builder.Services.AddScoped<CreateArticleUseCase>();
+builder.Services.AddScoped<GetArticleByIdUseCase>();
+builder.Services.AddScoped<UpdateArticleUseCase>();
+builder.Services.AddScoped<DeleteArticleUseCase>();
 
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
