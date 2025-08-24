@@ -8,6 +8,7 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -31,6 +32,7 @@ else
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 
 // Register Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -81,6 +83,9 @@ builder.Services.AddScoped<SearchArticlesUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
 builder.Services.AddScoped<LoginUserUseCase>();
 builder.Services.AddScoped<GetUsersUseCase>();
+builder.Services.AddScoped<UploadMediaUseCase>();
+builder.Services.AddScoped<GetMediaUseCase>();
+builder.Services.AddScoped<DeleteMediaUseCase>();
 
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
@@ -143,6 +148,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll"); // Enable CORS
+
+// Configure static file serving for uploaded media
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
 
 // Add Authentication & Authorization middleware
 app.UseAuthentication();

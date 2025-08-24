@@ -12,6 +12,7 @@ namespace BlogApi.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Media> Media { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +37,11 @@ namespace BlogApi.Infrastructure.Data
                 .HasOne(a => a.Author)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AuthorId);
+
+            modelBuilder.Entity<Media>()
+                .HasOne(m => m.UploadedBy)
+                .WithMany()
+                .HasForeignKey(m => m.UploadedByUserId);
 
             // Configure unique constraints
             modelBuilder.Entity<User>()
