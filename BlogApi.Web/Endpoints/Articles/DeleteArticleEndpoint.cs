@@ -8,19 +8,18 @@ namespace BlogApi.Web.Endpoints.Articles
         public int Id { get; set; }
     }    public class DeleteArticleEndpoint : Endpoint<DeleteArticleRequest>
     {
-        public DeleteArticleUseCase UseCase { get; set; } = null!;
-
-        public override void Configure()
+        public DeleteArticleUseCase UseCase { get; set; } = null!;        public override void Configure()
         {
             Delete("/api/articles/{id}");
-            AllowAnonymous();
-            Tags("Articles");
+            Policies("RequireUser");
+            Tags("1. Articles");
             Summary(s =>
             {
                 s.Summary = "Delete an article";
-                s.Description = "Deletes an existing article by its ID";
+                s.Description = "Deletes an existing article by its ID. Requires authentication.";
                 s.Response(204, "Article deleted successfully");
                 s.Response(404, "Article not found");
+                s.Response(401, "Unauthorized - authentication required");
             });
         }
 
@@ -38,3 +37,4 @@ namespace BlogApi.Web.Endpoints.Articles
         }
     }
 }
+

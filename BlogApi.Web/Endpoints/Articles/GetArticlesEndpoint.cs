@@ -6,13 +6,11 @@ namespace BlogApi.Web.Endpoints.Articles;
 
 public class GetArticlesEndpoint : EndpointWithoutRequest<IEnumerable<ArticleDto>>
 {
-    public GetArticlesUseCase UseCase { get; set; } = null!;
-
-    public override void Configure()
+    public GetArticlesUseCase UseCase { get; set; } = null!;    public override void Configure()
     {
         Get("/api/articles");
         AllowAnonymous();
-        Tags("Articles");
+        Tags("1. Articles");
         Summary(s =>
         {
             s.Summary = "Get all articles";
