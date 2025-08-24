@@ -13,12 +13,13 @@ namespace BlogApi.Application.UseCases
             _articleRepository = articleRepository;
         }
 
-        public async Task<ArticleDto> ExecuteAsync(string title, string content)
+        public async Task<ArticleDto> ExecuteAsync(string title, string content, int? authorId = null)
         {
             var article = new Article
             {
                 Title = title,
-                Content = content
+                Content = content,
+                AuthorId = authorId
             };
 
             var createdArticle = await _articleRepository.CreateAsync(article);
