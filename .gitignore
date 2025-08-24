@@ -8,7 +8,11 @@
 # .NET Core
 *.db
 *.log
-appsettings*.json
+
+# Configuration files (keeping appsettings.json as template, but excluding appsettings.Development.json)
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
 
 # Visual Studio
 .vs/
