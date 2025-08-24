@@ -1,6 +1,7 @@
 using BlogApi.Application.DTOs;
 using BlogApi.Application.Utilities;
 using BlogApi.Domain.Entities;
+using BlogApi.Domain.Enums;
 using BlogApi.Domain.Interfaces;
 
 namespace BlogApi.Application.UseCases
@@ -12,7 +13,7 @@ namespace BlogApi.Application.UseCases
         public CreateArticleUseCase(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-        }        public async Task<ArticleDto> ExecuteAsync(string title, string content, string category = "", string? thumbnailUrl = null, int? authorId = null, string? slug = null, string? metaTitle = null, string? metaDescription = null, string? metaKeywords = null)
+        }        public async Task<ArticleDto> ExecuteAsync(string title, string content, string category = "", string? thumbnailUrl = null, int? authorId = null, string? slug = null, string? metaTitle = null, string? metaDescription = null, string? metaKeywords = null, ArticleStatus status = ArticleStatus.Draft, DateTime? scheduledPublishAt = null)
         {
             // Generate slug if not provided
             if (string.IsNullOrWhiteSpace(slug))
@@ -41,6 +42,7 @@ namespace BlogApi.Application.UseCases
                 }
             }
 
+            var now = DateTime.UtcNow;
             var article = new Article
             {
                 Title = title,
@@ -52,7 +54,11 @@ namespace BlogApi.Application.UseCases
                 MetaTitle = metaTitle,
                 MetaDescription = metaDescription,
                 MetaKeywords = metaKeywords,
-                PublishedDate = DateTime.UtcNow
+                Status = status,
+                ScheduledPublishAt = scheduledPublishAt,
+                CreatedAt = now,
+                UpdatedAt = now,
+                PublishedDate = status == ArticleStatus.Published ? now : (scheduledPublishAt ?? now)
             };
 
             var createdArticle = await _articleRepository.CreateAsync(article);
@@ -69,7 +75,11 @@ namespace BlogApi.Application.UseCases
                 Slug = createdArticle.Slug,
                 MetaTitle = createdArticle.MetaTitle,
                 MetaDescription = createdArticle.MetaDescription,
-                MetaKeywords = createdArticle.MetaKeywords
+                MetaKeywords = createdArticle.MetaKeywords,
+                Status = createdArticle.Status,
+                ScheduledPublishAt = createdArticle.ScheduledPublishAt,
+                CreatedAt = createdArticle.CreatedAt,
+                UpdatedAt = createdArticle.UpdatedAt
             };
         }
     }

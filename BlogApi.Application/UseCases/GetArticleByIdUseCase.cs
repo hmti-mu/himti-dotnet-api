@@ -32,7 +32,11 @@ namespace BlogApi.Application.UseCases
                 Slug = article.Slug,
                 MetaTitle = article.MetaTitle,
                 MetaDescription = article.MetaDescription,
-                MetaKeywords = article.MetaKeywords
+                MetaKeywords = article.MetaKeywords,
+                Status = article.Status,
+                ScheduledPublishAt = article.ScheduledPublishAt,
+                CreatedAt = article.CreatedAt,
+                UpdatedAt = article.UpdatedAt
             };
         }
     }

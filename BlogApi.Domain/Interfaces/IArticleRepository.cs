@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogApi.Domain.Entities;
+using BlogApi.Domain.Enums;
 
 namespace BlogApi.Domain.Interfaces
 {
@@ -23,5 +24,7 @@ namespace BlogApi.Domain.Interfaces
         Task<IEnumerable<string>> GetCategoriesAsync();
         Task<Article?> GetBySlugAsync(string slug);
         Task<bool> SlugExistsAsync(string slug, int? excludeId = null);
+        Task<IEnumerable<Article>> GetPublishedArticlesAsync();
+        Task<IEnumerable<Article>> GetDraftsByUserAsync(int userId);
     }
 }

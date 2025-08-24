@@ -1,3 +1,4 @@
+using BlogApi.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogApi.Web.Models.Requests
@@ -29,5 +30,10 @@ namespace BlogApi.Web.Models.Requests
 
         [StringLength(500, ErrorMessage = "MetaKeywords cannot exceed 500 characters")]
         public string? MetaKeywords { get; set; }
+
+        // Status and workflow fields
+        public ArticleStatus Status { get; set; } = ArticleStatus.Draft;
+        
+        public DateTime? ScheduledPublishAt { get; set; }
     }
 }

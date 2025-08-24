@@ -35,7 +35,7 @@ namespace BlogApi.Web.Endpoints.Articles
                 authorId = userId;
             }
             
-            var result = await UseCase.ExecuteAsync(req.Title, req.Content, req.Category ?? "", req.ThumbnailUrl, authorId, req.Slug, req.MetaTitle, req.MetaDescription, req.MetaKeywords);
+            var result = await UseCase.ExecuteAsync(req.Title, req.Content, req.Category ?? "", req.ThumbnailUrl, authorId, req.Slug, req.MetaTitle, req.MetaDescription, req.MetaKeywords, req.Status, req.ScheduledPublishAt);
             Response = result;
             HttpContext.Response.StatusCode = 201;
         }
