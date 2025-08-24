@@ -6,5 +6,9 @@ namespace BlogApi.Domain.Entities
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public DateTime PublishedDate { get; set; }
+        public int? AuthorId { get; set; } // Nullable to support existing articles without authors
+
+        // Navigation properties
+        public User? Author { get; set; }
     }
 }
